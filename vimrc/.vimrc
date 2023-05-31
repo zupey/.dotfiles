@@ -67,5 +67,4 @@ au!
 autocmd VimEnter * silent !echo -ne "\e[2 q"
 augroup END
 
-
 imap jj <Esc>
