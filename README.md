@@ -23,6 +23,8 @@ Each subfolder in the `.dotfiles` repository is stores a dotfile for a particula
 - -t is target directory (The next argument is the target directory, usually `~`)
 - ending argument is which directories to use for symlinks
 - -n flag is to see what stow intends to execute (by reading the verbose output).  Remove the flag to actually execute the command.
+- --adopt to firstly move the file over to .dotfiles and then create a symlink from there (useful for setting up stow)
+- e.g. the git package only tracks `.gitconfig` Run `stow --adopt -nv git` (moves .gitconfig into .dotfiles/git/.gitconfig and then create symlink)
 
 
 [Reddit link on how to use stow](https://www.reddit.com/r/neovim/comments/z0zvfb/protip_how_to_back_up_all_dotfiles/)
