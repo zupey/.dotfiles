@@ -1,0 +1,19 @@
+[color]
+	ui = true
+
+[user]
+	email = linuslee2000@gmail.com
+	name = Linus
+[core]
+	editor = nvim
+[credential]
+	helper = /mnt/c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-manager-core.exe
+[alias]
+	st = status -sb
+	ll = log --graph --oneline --decorate
+	cm = commit -m
+	cg = config --global -l
+  cb = checkout -b
+  co = checkout
+	ca = commit --amend --no-edit
+  gone = "!f() { git fetch --all --prune; git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D; }; f"
