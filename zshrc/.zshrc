@@ -21,6 +21,8 @@ export PATH=$PATH:$HOME/.local/bin
 # ALIASES
 alias vim="nvim"
 alias py="python3"
+# Added a symbolic link from batcat to bat
+# ln -s /usr/bin/batcat ~/.local/bin/bat
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -134,8 +136,9 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#00ffff,bold,underline"
 ZSH_AUTOSUGGEST_COMPLETION_IGNORE="git *"
 
 
-bindkey "^f" forward-word
-bindkey "^b" backward-word
+# GNU-readline commands already include this?
+#bindkey "^b" backward-word
+#bindkey "^f" forward-word
 alias jupyter-notebook="~/.local/bin/jupyter-notebook --no-browser"
 
 export NVM_DIR="$HOME/.nvm"
@@ -155,17 +158,29 @@ function mkcd
 # Setting up the default settings
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
-# Use fd (https://github.com/sharkdp/fd) instead of the default find
-# command for listing path candidates.
-# - The first argument to the function ($1) is the base path to start traversal
-# - See the source code (completion.{bash,zsh}) for the details.
-#_fzf_compgen_path() {
-  #fd --hidden --follow --exclude ".git" . "$1"
-#}
 
-# Use fd to generate the list for directory completion
-#_fzf_compgen_dir() {
-  #fd --type d --hidden --follow --exclude ".git" . "$1"
-#}
+# Use fd instead of the default find
 export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git --exclude node_modules'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# smarter git checkout using fzf (including remote branches)
+gch() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD) &&
+    branch=$(echo "$branches" |
+    fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+    git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+  }
+
+
+# use fzf to search through man pages and preview them using bat
+fman() {
+    man -k . | fzf -q "$1" --prompt='man> '  --preview $'echo {} | tr -d \'()\' | awk \'{printf "%s ", $2} {print $1}\' | xargs -r man | col -bx | bat -l man -p --color always' | tr -d '()' | awk '{printf "%s ", $2} {print $1}' | xargs -r man
+}
+
+# using ripgrep combined with preview
+# find-in-file - usage: fif <searchTerm>
+fif() {
+  if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
+  rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
+}
