@@ -138,8 +138,8 @@ ZSH_AUTOSUGGEST_COMPLETION_IGNORE="git *"
 
 
 # GNU-readline commands already include this?
-#bindkey "^b" backward-word
-#bindkey "^f" forward-word
+bindkey "^b" backward-word
+bindkey "^f" forward-word
 alias jupyter-notebook="~/.local/bin/jupyter-notebook --no-browser"
 
 export NVM_DIR="$HOME/.nvm"
