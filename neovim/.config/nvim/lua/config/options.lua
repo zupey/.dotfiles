@@ -18,3 +18,6 @@ if has ("wsl")
   \ }
 endif
 ]])
+
+-- automatically wraps text
+vim.opt.wrap = true

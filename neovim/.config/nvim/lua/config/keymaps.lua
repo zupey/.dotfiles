@@ -21,3 +21,7 @@ map("n", "<C-h>", "<cmd> TmuxNavigateLeft<CR>", { desc = "Go to left tmux pane",
 map("n", "<C-j>", "<cmd> TmuxNavigateDown<CR>", { desc = "Go to btm tmux pane", remap = true })
 map("n", "<C-k>", "<cmd> TmuxNavigateUp<CR>", { desc = "Go to top tmux pane", remap = true })
 map("n", "<C-l>", "<cmd> TmuxNavigateRight<CR>", { desc = "Go to right tmux pane", remap = true })
+
+-- Unmap Alt j + k which originally swaps rows of lines because there is a bug where hitting escape and j/k in close succession somehow triggers the alt key.
+vim.keymap.del("i", "<A-j>")
+vim.keymap.del("i", "<A-k>")
