@@ -25,7 +25,7 @@ if true then return {
         -- Configuration here, or leave empty to use defaults
       })
     end
-  }
+  },
 } end
 
 -- every spec file under config.plugins will be loaded automatically by lazy.nvim

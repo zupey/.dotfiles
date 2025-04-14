@@ -21,6 +21,8 @@ export PATH=$PATH:$HOME/.local/bin
 # ALIASES
 alias vim="nvim"
 alias py="python3"
+alias clang="clang-15"
+alias clang++="clang++-15"
 # Added a symbolic link from batcat to bat
 # ln -s /usr/bin/batcat ~/.local/bin/bat
 
@@ -185,4 +187,30 @@ fman() {
 fif() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
   rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
+}
+
+# compile cpp code for kattis
+kat() {
+    if [ -z "$1" ]; then
+        echo "Usage: compile_cpp <filename>"
+        return 1
+    fi
+
+    # Extract the filename without the extension
+    local filename=$(basename -- "$1")
+    local filename_without_ext="${filename%.*}"
+
+    # Compile the C++ file
+    g++ "$1" -std=c++20 -O2 -Wall -o "${filename_without_ext}.out"
+
+    # Check if the compilation was successful
+    if [ $? -eq 0 ]; then
+        echo "Compilation successful. Output file: ${filename_without_ext}.out"
+    else
+        echo "Compilation failed."
+    fi
+}
+
+ded() {
+  echo DEDDDDDDDD
 }
